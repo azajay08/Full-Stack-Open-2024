@@ -1,13 +1,10 @@
 import { useState } from 'react'
 
-const Button = ({type, text}) => {
-	return (
-		<button type={type} >{text}</button>
-	)
-}
+const Button = ({type, text}) => <button type={type}> {text}</button>
 
 const Persons = ({people}) => {
-	const peopleList = people.map(props => <Person key={props.id} name={props.name} number={props.number}/>)
+	const peopleList = people.map
+	(props => <Person key={props.id} name={props.name} number={props.number}/>)
 	return (
 		<div>
 			{peopleList}
@@ -15,11 +12,7 @@ const Persons = ({people}) => {
 	)
 }
 
-const Person = ({name, number}) => {
-	return (
-		<div>{name} {number}</div>
-	)
-}
+const Person = ({name, number}) => <div>{name} {number}</div>
 
 const Header = ({text}) => <h2>{text}</h2>
 
@@ -31,11 +24,19 @@ const Filter = ({text, value, handleChange}) => {
 	)
 }
 
-const PersonForm = (props) => {
+const FormBox = ({text, inputName, value, handleChange}) => {
 	return (
-		<form onSubmit={props.onSubmit}>
-			<div>{props.name} <input id="nameInput" value={props.newName} onChange={props.handleNewName}/></div>
-			<div>{props.number} <input id="numberInput" value={props.newNumber} onChange={props.handleNewNumber}/></div>
+		<div>{text} <input id={inputName} value={value} onChange={handleChange}/></div>
+	)
+}
+
+const PersonForm = ({onSubmit, newName, newNumber, handleNewName, handleNewNumber}) => {
+	return (
+		<form onSubmit={onSubmit}>
+			<FormBox text='name:' inputName='nameInput'
+			 value={newName} handleChange={handleNewName}/>
+			<FormBox text='number:' inputName='numberInput'
+			 value={newNumber} handleChange={handleNewNumber}/>
 			<Button type="submit" text='add'/>
 		</form>
 	)
@@ -61,7 +62,8 @@ const App = () => {
 			id: persons.length + 1,
 		}
 
-		const nameExists = persons.find(props => props.name.toLowerCase() === newPerson.name.toLowerCase())
+		const nameExists = persons.find
+		(props => props.name.toLowerCase() === newPerson.name.toLowerCase())
 		
 		if (nameExists) {
 			window.alert(`${newName} is already added to phonebook`)
@@ -73,7 +75,8 @@ const App = () => {
 		}
 	}
 	
-	const filteredPersons = persons.map(person => person.name.toLowerCase().includes(filterName.toLowerCase())) ?
+	const filteredPersons = persons.map
+	(person => person.name.toLowerCase().includes(filterName.toLowerCase())) ?
 	persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase())) :
 	persons
 
@@ -89,12 +92,8 @@ const App = () => {
 		<Filter text='filter shown with' value ={filterName} handleChange={handleFilter} />
 		<Header text='Add a new'/>
 		<PersonForm onSubmit={addContact}
-			name={'name:'}
-			number={'number:'}
-			newName={newName}
-			newNumber={newNumber}
-			handleNewName={handleNewName}
-			handleNewNumber={handleNewNumber}/>
+			newName={newName} newNumber={newNumber}
+			handleNewName={handleNewName} handleNewNumber={handleNewNumber}/>
 		<Header text='Numbers'/>
 		<Persons people={filteredPersons}/>
 		</div>
