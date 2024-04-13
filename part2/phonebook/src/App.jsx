@@ -16,6 +16,8 @@ const Person = ({name, number}) => <div>{name} {number}</div>
 
 const Header = ({text}) => <h2>{text}</h2>
 
+const SubHeader = ({text}) => <h3>{text}</h3>
+
 const Filter = ({text, value, handleChange}) => {
 	return (
 		<div>
@@ -90,7 +92,7 @@ const App = () => {
 		<div>
 		<Header text='Phonebook'/>
 		<Filter text='filter shown with' value ={filterName} handleChange={handleFilter} />
-		<Header text='Add a new'/>
+		<SubHeader text='Add a new'/>
 		<PersonForm onSubmit={addContact}
 			newName={newName} newNumber={newNumber}
 			handleNewName={handleNewName} handleNewNumber={handleNewNumber}/>
