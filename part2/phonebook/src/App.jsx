@@ -62,12 +62,25 @@ const App = () => {
 			number: newNumber
 		}
 
-		const nameExists = persons.find
+		const existingContact = persons.find
 		(props => props.name.toLowerCase() === newPerson.name.toLowerCase())
 		
-		console.log(nameExists)
-		if (nameExists) {
+		const changedContact = { ...existingContact, number: newNumber }
+
+
+		if (existingContact && existingContact.number === newPerson.number) {
 			window.alert(`${newName} is already added to phonebook`)
+		}
+		else if (existingContact && existingContact.number !== newPerson.number) {
+			if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+				personServices
+				.update(existingContact.id, changedContact)
+				.then(returnedPerson => {
+					setPersons(persons.map(n => n.id !== existingContact.id? n : returnedPerson))
+					setNewName('')
+					setNewNumber('')
+				})
+			}
 		}
 		else {
 			personServices
