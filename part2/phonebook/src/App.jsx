@@ -7,6 +7,17 @@ const SubHeader = ({text}) => <h3>{text}</h3>
 
 const Persons = ({people}) => <div>{people}</div>
 
+const Notification = ({ message, errorMessage}) => {
+	if (message === null) {
+	  return null
+	}
+	return (
+	  <div className={errorMessage ? 'error' : 'success'}>
+		{message}
+	  </div>
+	)
+  }
+
 const Button = ({type, text, handleChange}) => {
 	return(
 		<button type={type} onClick={handleChange}> {text}</button>
@@ -46,6 +57,9 @@ const App = () => {
 	const [newName, setNewName] = useState('')
 	const [newNumber, setNewNumber] = useState('')
 	const [filterName, setFilterName] = useState('')
+	const [changeMessage, setChangeMessage] = useState(null)
+	const [errorMessage, setErrorMessage] = useState(false)
+	
 
 	useEffect(() => {
 		personServices
@@ -80,6 +94,10 @@ const App = () => {
 					setNewName('')
 					setNewNumber('')
 				})
+				.catch(error => {
+					setErrorMessage(true)
+					setChangeMessage(`Information of ${newName} has already been removed`)
+				})
 			}
 		}
 		else {
@@ -89,6 +107,9 @@ const App = () => {
 				setPersons(persons.concat(returnedPerson))
 				setNewName('')
 				setNewNumber('')
+				setErrorMessage(false)
+				setChangeMessage(`Successfully added ${newName}`)
+				setTimeout(() => {setChangeMessage(null)}, 5000)
 			})
 		}
 	}
@@ -132,6 +153,7 @@ const App = () => {
 	return (
 		<div>
 		<Header text='Phonebook'/>
+		<Notification message={changeMessage} errorMessage={errorMessage}/>
 		<Filter text='filter shown with' value ={filterName} handleChange={handleFilter} />
 		<SubHeader text='Add a new'/>
 		<PersonForm onSubmit={addContact}
