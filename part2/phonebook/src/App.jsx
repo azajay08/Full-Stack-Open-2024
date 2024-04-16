@@ -93,6 +93,9 @@ const App = () => {
 					setPersons(persons.map(n => n.id !== existingContact.id? n : returnedPerson))
 					setNewName('')
 					setNewNumber('')
+					setErrorMessage(false)
+					setChangeMessage(`Number of ${newName} successfully updated`)
+					setTimeout(() => {setChangeMessage(null)}, 5000)
 				})
 				.catch(error => {
 					setErrorMessage(true)
@@ -121,6 +124,9 @@ const App = () => {
 			personServices
 			.getDeletedPerson(id)
 			setPersons(persons.filter(contact => contact.id !== id))
+			setErrorMessage(false)
+			setChangeMessage(`Successfully deleted ${contact.name}`)
+			setTimeout(() => {setChangeMessage(null)}, 5000)
 		}
 	}
 	
