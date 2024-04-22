@@ -1,33 +1,10 @@
+require('dotenv').config()
+
 const morgan = require('morgan')
 const express = require('express')
-const app = express()
-
-const maxContacts = 1000 // Big enough range for phonebook length purpose
-
-let persons = [
-    { 
-      id: 1,
-      name: "Arto Hellas", 
-      number: "040-123456"
-    },
-    { 
-      id: 2,
-      name: "Ada Lovelace", 
-      number: "39-44-5323523"
-    },
-    { 
-      id: 3,
-      name: "Dan Abramov", 
-      number: "12-43-234345"
-    },
-    { 
-      id: 4,
-      name: "Mary Poppendieck", 
-      number: "39-23-6423122"
-    }
-]
-
 const cors = require('cors')
+const app = express()
+const Person = require('./models/person')
 
 app.use(express.static('dist'))
 app.use(cors())
@@ -44,34 +21,29 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-	response.json(persons)
+	Person.find({}).then(person => {
+		response.json(person)
+	})
 })
+
 
 app.get('/api/persons/:id', (request, response) => {
-	const id = Number(request.params.id)
-	const person = persons.find(person => person.id === id)
-	if (person) {
-	  response.json(person)
-	} else {
-	  response.status(404).end()
-	}
+	Person.findById(request.params.id).then(person => {
+		if (person) {
+			response.json(person)
+		}
+		else {
+			response.status(404).end()
+		}
+	})
 })
+
 
 app.delete('/api/persons/:id', (request, response) => {
-	const id = Number(request.params.id)
-	persons = persons.filter(person => person.id !== id)
-  
-	response.status(204).end()
+	Person.findByIdAndDelete(request.params.id).then(() => {
+		response.status(204).end()
+	})
 })
-
-const generateId = () => {
-	let newId
-	do {
-		newId = Math.floor(Math.random() * maxContacts) + 1 // could use Number.MAX_SAFE_INTEGER for bigger range
-	} 
-	while (persons.some(person => person.id === newId))
-	return newId
-}
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
@@ -84,28 +56,14 @@ app.post('/api/persons', (request, response) => {
 		})
 	}
 
-	if (persons.length > maxContacts - 1) {
-		return response.status(400).json({ 
-			error: 'Phonebook is full' 
-		})
-	}
-
-	if (persons.find(props => 
-		props.name.toLowerCase() === body.name.toLowerCase())) {
-		return response.status(400).json({ 
-			error: 'name must be unique' 
-		})
-	}
-  
-	const newPerson = {
+	const person = new Person({
 		name: body.name,
 		number: body.number,
-		id: generateId(),
-	}
+	})
   
-	persons = persons.concat(newPerson)
-  
-	response.json(newPerson)
+	person.save().then(savedPerson => {
+		response.json(savedPerson)
+	})
 })
 
 const unknownEndpoint = (request, response) => {
@@ -115,7 +73,7 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`)
 })
