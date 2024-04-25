@@ -12,6 +12,8 @@ app.use(morgan('tiny'))
 app.use(express.json())
 morgan.token('body', (request) => JSON.stringify(request.body))
 
+const morganFormat = (morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
 const errorHandler = (error, request, response, next) => {
 	console.error(error.message)
 
@@ -63,9 +65,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 	.catch(error => next(error))
 })
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
-
-app.post('/api/persons', (request, response, next) => {
+app.post('/api/persons', morganFormat, (request, response, next) => {
 	const body = request.body
   
 	if (!body.name || !body.number) {
