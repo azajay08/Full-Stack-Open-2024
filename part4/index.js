@@ -20,6 +20,14 @@ mongoose.connect(mongoUrl)
 app.use(cors())
 app.use(express.json())
 
+app.get('/api/blogs', (request, response) => {
+  Blog
+  .find({})
+  .then(blogs => {
+    response.json(blogs)
+  })
+})
+
 app.get('/api/blogs/:id', (request, response) => {
   Blog.
     findById(request.params.id)
@@ -30,14 +38,6 @@ app.get('/api/blogs/:id', (request, response) => {
       else {
         response.status(404).end()
       }
-    })
-})
-
-app.get('/api/blogs', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
     })
 })
 
