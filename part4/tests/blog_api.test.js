@@ -18,7 +18,18 @@ beforeEach(async () => {
   await Promise.all(promsieArray) 
 })
 
+test('blogs are returned as json', async () => {
+  await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+})
 
+test('correct amount of blogs are returned', async () => {
+  const respone = await api.get('/api/blogs')
+
+  assert.strictEqual(respone.body.length, helper.initialBlogs.length)
+})
 
 after(async () => {
   await mongoose.connection.close()
