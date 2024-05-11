@@ -57,7 +57,11 @@ test('a valid blog can be added', async () => {
 
   const response = await api.get('/api/blogs')
 
+  const contents = response.body.map(r => r.title)
+
   assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
+
+  assert(contents.includes('Blogger'))
 })
 
 after(async () => {
