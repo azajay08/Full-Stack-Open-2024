@@ -55,13 +55,69 @@ test('a valid blog can be added', async () => {
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('/api/blogs')
+  const blogsAtEnd = await helper.blogsInDb()
 
-  const contents = response.body.map(r => r.title)
+  const contents = blogsAtEnd.map(blog => blog.title)
 
-  assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
 
   assert(contents.includes('Blogger'))
+})
+
+test('a new blog missing likes property defaults to 0', async () => {
+  const newBlog = {
+    title: 'Blogger',
+    author: 'Joe Blogs',
+    url: 'www.averagejoe.com',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+  const blogToView = blogsAtEnd[blogsAtEnd.length - 1]
+
+  assert.strictEqual(blogToView.likes, 0)
+})
+
+test('a new blog missing title property will not be added', async () => {
+  const newBlog = {
+    author: 'Joe Blogs',
+    url: 'www.averagejoe.com',
+    likes: 3,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+})
+
+test('a new blog missing url property will not be added', async () => {
+  const newBlog = {
+    title: 'Blogger',
+    author: 'Joe Blogs',
+    likes: 3,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 })
 
 after(async () => {

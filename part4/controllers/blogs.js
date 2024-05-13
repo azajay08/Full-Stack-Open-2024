@@ -1,6 +1,5 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const { blogsInDb } = require('../tests/test_helper')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
@@ -23,11 +22,15 @@ blogsRouter.post('/', async (request, response) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    like: body.likes,
+    likes: body.likes ? body.likes : 0,
   })
 
-  const savedBlog = await blog.save()
-  response.status(201).json(savedBlog)
+  if (blog.title === undefined || blog.url === undefined) {
+    response.status(400).end()
+  } else {
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
+  }
 })
 
 module.exports = blogsRouter
