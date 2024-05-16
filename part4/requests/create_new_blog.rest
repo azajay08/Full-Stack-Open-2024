@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-	"title": "example3",
-	"author": "John",
-  "url": "www.John.com",
-  "likes": 101
+	"title": "Canonical string reduction",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+  "likes": 12,
+  "user": "664641669fc14aa67214146e"
 }
