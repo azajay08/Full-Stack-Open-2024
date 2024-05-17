@@ -1,6 +1,6 @@
 const _ = require('lodash')
 
-const dummy = (blogs) => {
+const dummy = () => {
   return 1
 }
 
@@ -11,9 +11,9 @@ const totalLikes = (blogs) => {
 
   const blogLikes = blogs.map(blogs => blogs.likes)
 
-  return blogs.length === 0 
-  ? 0
-  : blogLikes.reduce(reducer, 0)
+  return blogs.length === 0
+    ? 0
+    : blogLikes.reduce(reducer, 0)
 }
 
 

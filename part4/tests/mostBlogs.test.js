@@ -51,7 +51,7 @@ describe('most blogs', () => {
       url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
       likes: 2,
       __v: 0
-    }  
+    }
   ]
 
   test('finding author with most blogs', () => {
