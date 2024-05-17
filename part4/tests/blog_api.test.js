@@ -17,13 +17,13 @@ beforeEach(async () => {
   await User.deleteMany({})
   await Blog.deleteMany({})
 
-  const password = "password1"
+  const password = 'password1'
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
   const user = new User({
-    username: "User1",
-    name: "User One",
+    username: 'User1',
+    name: 'User One',
     blogs: [],
     passwordHash,
   })
@@ -31,8 +31,8 @@ beforeEach(async () => {
   await user.save()
 
   const userLogin = {
-    username: "User1",
-    password: "password1"
+    username: 'User1',
+    password: 'password1'
   }
 
   const login = await api
