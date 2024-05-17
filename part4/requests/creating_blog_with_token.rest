@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjY0NjQxNjY5ZmMxNGFhNjcyMTQxNDZlIiwiaWF0IjoxNzE1OTM5ODUyfQ.VCTNUjviWtVtQEuDQw1NuCRg9Pi-9g6kR0KjVN0Ptt8
+
+{
+	"title": "Token Blog",
+  "author": "J.R.R Token",
+  "url": "http://www.tokenblog.edu",
+  "likes": 12
+}
