@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjY0NjQxNjY5ZmMxNGFhNjcyMTQxNDZlIiwiaWF0IjoxNzE1OTM5ODUyfQ.VCTNUjviWtVtQEuDQw1NuCRg9Pi-9g6kR0KjVN0Ptt8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjY0NjQxNjY5ZmMxNGFhNjcyMTQxNDZlIiwiaWF0IjoxNzE1OTQ3MDAyfQ.U9b9P-RRVz_NglgwWLA8g7vYT-R6L1uL4F9Qz-b21Dk
 
 {
-	"title": "Token Blog",
-  "author": "J.R.R Token",
-  "url": "http://www.tokenblog.edu",
+	"title": "x Blog",
+  "author": "x Token",
+  "url": "http://www.xblog.edu",
   "likes": 12
 }
