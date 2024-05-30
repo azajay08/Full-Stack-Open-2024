@@ -52,6 +52,43 @@ const App = () => {
     setUser(null)
   }
 
+  const addBlog = (blogObject) => {
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+      })
+  }
+
+  const BlogForm = ({ newBlog }) => {
+
+    return (
+      <div>
+        <h2>create new</h2>
+        <form onSubmit={newBlog}>
+          <div>
+            title:
+            <input
+              
+            />
+          </div>
+          <div>
+            author:
+            <input
+
+            />
+          </div>
+          <div>
+            url:
+            <input
+
+            />
+          </div>
+          <button type="submit">create</button>
+        </form>
+      </div>
+    )
+  }
 
   if (user === null) {
     return (
@@ -89,6 +126,7 @@ const App = () => {
       <p>{user.name} logged in 
       <button type="submit" onClick={handleLogout}>logout</button>
       </p>
+      <BlogForm newBlog={addBlog}/>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog}/>
       )}
