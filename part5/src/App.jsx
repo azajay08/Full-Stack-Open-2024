@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,7 +13,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     )  
   }, [])
 
@@ -60,36 +61,6 @@ const App = () => {
       })
   }
 
-  const BlogForm = ({ newBlog }) => {
-
-    return (
-      <div>
-        <h2>create new</h2>
-        <form onSubmit={newBlog}>
-          <div>
-            title:
-            <input
-              
-            />
-          </div>
-          <div>
-            author:
-            <input
-
-            />
-          </div>
-          <div>
-            url:
-            <input
-
-            />
-          </div>
-          <button type="submit">create</button>
-        </form>
-      </div>
-    )
-  }
-
   if (user === null) {
     return (
       <div>
@@ -126,7 +97,7 @@ const App = () => {
       <p>{user.name} logged in 
       <button type="submit" onClick={handleLogout}>logout</button>
       </p>
-      <BlogForm newBlog={addBlog}/>
+      <BlogForm addBlog={addBlog}/>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog}/>
       )}
