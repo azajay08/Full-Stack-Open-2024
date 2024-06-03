@@ -7,7 +7,7 @@ const SubHeader = ({text}) => <h3>{text}</h3>
 
 const Persons = ({people}) => <div>{people}</div>
 
-const Notification = ({ message, errorMessage}) => {
+const Notification = ({ message, errorMessage }) => {
 	if (message === null) {
 	  return null
 	}
@@ -16,7 +16,7 @@ const Notification = ({ message, errorMessage}) => {
 		{message}
 	  </div>
 	)
-  }
+}
 
 const Button = ({type, text, handleChange}) => {
 	return(
