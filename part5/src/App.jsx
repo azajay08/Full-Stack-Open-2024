@@ -13,6 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [refreshBlog, setRefreshBlog] = useState(false)
 
   const blogFormRef = useRef()
 
@@ -20,7 +21,7 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )  
-  }, [])
+  }, [refreshBlog])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -67,10 +68,16 @@ const App = () => {
         setBlogs(blogs.concat(returnedBlog))
         setErrorStatus(false)
         setChangeMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
+        setRefreshBlog(!refreshBlog)
         setTimeout(() => {
           setChangeMessage(null)
         }, 5000)
       })
+  }
+
+  const updateBlog = async (id, blogObject) => {
+    await blogService.update(id, blogObject)
+    setRefreshBlog(!refreshBlog)
   }
 
   if (user === null) {
@@ -113,7 +120,7 @@ const App = () => {
         <BlogForm createBlog={addBlog}/>
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog}/>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
       )}
     </div>
   )
