@@ -45,6 +45,7 @@ const App = () => {
       )
       blogService.setToken(user.token)
       setUser(user)
+      console.log(user.id)
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -78,6 +79,11 @@ const App = () => {
 
   const updateBlog = async (id, blogObject) => {
     await blogService.update(id, blogObject)
+    setRefreshBlog(!refreshBlog)
+  }
+
+  const deleteBlog = async id => {
+    await blogService.remove(id)
     setRefreshBlog(!refreshBlog)
   }
 
@@ -121,7 +127,7 @@ const App = () => {
         <BlogForm createBlog={addBlog}/>
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user}/>
       )}
     </div>
   )

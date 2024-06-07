@@ -41,7 +41,7 @@ const tokenExtractor = (request, response, next) => {
   return next()
 }
 
-const userExtractor = async (request, respone, next) => {
+const userExtractor = async (request, response, next) => {
   if (!request.token) {
     request.user = null
   } else {
