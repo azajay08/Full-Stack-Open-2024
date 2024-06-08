@@ -1,13 +1,13 @@
 const Notification = ({ message, errorStatus }) => {
-	if (message === null) {
-	  return null
-	}
-  
-	return (
-	  <div className={errorStatus ? 'error' : 'success'}>
-		{message}
-	  </div>
-	)
+  if (message === null) {
+    return null
   }
-  
-  export default Notification
+
+  return (
+    <div className={errorStatus ? 'error' : 'success'}>
+      {message}
+    </div>
+  )
+}
+
+export default Notification

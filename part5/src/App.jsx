@@ -10,7 +10,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorStatus, setErrorStatus] = useState(false)
   const [changeMessage, setChangeMessage] = useState(null)
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [refreshBlog, setRefreshBlog] = useState(false)
@@ -21,7 +21,7 @@ const App = () => {
     blogService.getAll().then(blogs => {
       blogs.sort((a, b) => b.likes - a.likes)
       setBlogs(blogs)
-    })  
+    })
   }, [refreshBlog])
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -93,27 +93,27 @@ const App = () => {
         <h2>Log in to application</h2>
         <Notification message={changeMessage} errorStatus={errorStatus}/>
         <form onSubmit={handleLogin}>
-      <div>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-      <p>{user}</p>
-    </form>
+          <div>
+            username
+            <input
+              type="text"
+              value={username}
+              name="Username"
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </div>
+          <div>
+            password
+            <input
+              type="password"
+              value={password}
+              name="Password"
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </div>
+          <button type="submit">login</button>
+          <p>{user}</p>
+        </form>
       </div>
     )
   }
