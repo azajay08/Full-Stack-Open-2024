@@ -63,7 +63,12 @@ describe('Blog app', () => {
       })
 
       test('a blog can be liked', async ({ page }) => {
-        
+        const blog = page.locator('.blog').filter({ hasText: 'example1'})
+        await blog.getByRole('button', { name: 'view' }).click()
+
+        await expect(blog.getByText('likes 0')).toBeVisible()
+        await blog.getByRole('button', { name: 'like' }).click()
+        await expect(blog.getByText('likes 1')).toBeVisible()
       })
     })
   })
