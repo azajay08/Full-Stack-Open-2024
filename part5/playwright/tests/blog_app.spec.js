@@ -87,6 +87,50 @@ describe('Blog app', () => {
 
         await expect(blog).not.toBeVisible()
       })
+
+      test('only the user who added blog can delete blog', async ({ page, request }) => {
+        const blog = page.locator('.blog').filter({ hasText: 'example1'})
+        await blog.getByRole('button', { name: 'view' }).click()
+        await expect(blog.getByRole('button', { name: 'remove' })).toBeVisible()
+
+        await page.getByRole('button', { name: 'logout' }).click()
+        await request.post('/api/users', {
+          data: {
+            username: 'newuser',
+            name: 'New User',
+            password: 'password',
+          }
+        })
+        await loginWith(page, 'newuser', 'password')
+
+        await blog.getByRole('button', { name: 'view' }).click()
+        await expect(blog.getByRole('button', { name: 'remove' })).not.toBeVisible()
+      })
+
+      test('blogs are arranged in order of likes with most likes first', async ({ page }) => {
+        const blog1 = page.locator('.blog').filter({ hasText: 'example1' })
+        const blog2 = page.locator('.blog').filter({ hasText: 'example2' })
+        const blog3 = page.locator('.blog').filter({ hasText: 'example3' })
+
+        await blog1.getByRole('button', { name: 'view' }).click()
+        await blog2.getByRole('button', { name: 'view' }).click()
+        await blog3.getByRole('button', { name: 'view' }).click()
+
+        const blogTwoLikeButton = blog2.getByRole('button', { name: 'like' })
+        const blogThreeLikeButton = blog3.getByRole('button', { name: 'like' })
+
+        await blogTwoLikeButton.click()
+        await blogThreeLikeButton.click()
+        await blogTwoLikeButton.click()
+
+        await expect(blog2).toContainText('likes 2')
+        await expect(blog3).toContainText('likes 1')
+        await expect(blog1).toContainText('likes 0')
+
+        expect(page.locator('.blog').first()).toContainText('example2')
+        expect(page.locator('.blog').nth(1)).toContainText('example3')
+        expect(page.locator('.blog').last()).toContainText('example1')
+      })
     })
   })
 })
