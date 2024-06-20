@@ -127,6 +127,11 @@ describe('Blog app', () => {
         await expect(blog3).toContainText('likes 1')
         await expect(blog1).toContainText('likes 0')
 
+        // This is for it to work with firefox
+        await page.waitForSelector('.blog:has-text("example2")')
+        await page.waitForSelector('.blog:has-text("example3")')
+        await page.waitForSelector('.blog:has-text("example1")')
+
         expect(page.locator('.blog').first()).toContainText('example2')
         expect(page.locator('.blog').nth(1)).toContainText('example3')
         expect(page.locator('.blog').last()).toContainText('example1')
