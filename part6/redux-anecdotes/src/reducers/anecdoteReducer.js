@@ -22,8 +22,27 @@ const initialState = anecdotesAtStart.map(asObject)
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
+  switch(action.type) {
+    case 'INCREMENT_LIKES':
+      const id = action.data.id
+      const anecdoteToLike = state.find(n => n.id === id)
+      const likedAnecdote = {
+        ...anecdoteToLike,
+        votes: anecdoteToLike.votes + 1
+      }
+      return state.map(anecdote =>
+        anecdote.id !== id ? anecdote : likedAnecdote
+      )
+    default:
+      return state
+  }
+}
 
-  return state
+export const addLikes = (id) => {
+  return {
+    type: "INCREMENT_LIKES",
+    data: { id }
+  }
 }
 
 export default reducer
