@@ -40,11 +40,11 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export const createAnecodote = (content) => {
+export const createAnecodote = (anecdote) => {
   return {
     type: 'NEW_ANECDOTE',
     data: {
-      content: content,
+      content: anecdote,
       id: getId(),
       votes: 0
     }
