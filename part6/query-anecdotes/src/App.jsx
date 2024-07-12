@@ -16,17 +16,16 @@ const App = () => {
       queryClient.setQueryData(['anecdotes'], anecdotes.map(anecdote =>
         anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote
       ))
+      dispatch({ type: 'SHOW_NOTIFICATION', payload: `anecdote '${updatedAnecdote.content}' voted`})
+      setTimeout(() => {
+        dispatch({ type: 'HIDE_NOTIFICATION' })
+      }, 5000)
     }
   })
 
-  const handleVote = async (anecdote) => {
+  const handleVote = (anecdote) => {
     updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes + 1})
     console.log('vote')
-
-    await dispatch({ type: 'SHOW_NOTIFICATION', payload: `anecdote '${anecdote.content}' voted`})
-    setTimeout(() => {
-      dispatch({ type: 'HIDE_NOTIFICATION' })
-    }, 5000)
   }
 
   const result = useQuery({
