@@ -1,5 +1,4 @@
-.error {
-  color: red;
+.notification {
   background: lightgrey;
   font-size: 20px;
   border-style: solid;
@@ -8,14 +7,12 @@
   margin-bottom: 10px;
 }
 
-.success {
+.notification.success {
   color: green;
-  background: lightgrey;
-  font-size: 20px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+}
+
+.notification.error {
+  color: red;
 }
 
 /* .blogStyle {
