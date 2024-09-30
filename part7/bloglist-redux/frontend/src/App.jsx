@@ -7,13 +7,10 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import { useDispatch } from "react-redux";
 import { createNotification } from "./reducers/notificationReducer";
+import LoginForm from "./components/LoginForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  // const [errorStatus, setErrorStatus] = useState(false);
-  // const [changeMessage, setChangeMessage] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [refreshBlog, setRefreshBlog] = useState(false);
 
@@ -37,20 +34,12 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
+  const handleLogin = async (credentials) => {
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
+      const user = await loginService.login(credentials);
+      setUser(user);
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       blogService.setToken(user.token);
-      setUser(user);
-      console.log(user.id);
-      setUsername("");
-      setPassword("");
     } catch (exception) {
       dispatch(createNotification("wrong username or password", "error", 5));
     }
@@ -89,32 +78,8 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <h2>Log in to application</h2>
         <Notification />
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              data-testid="username"
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              data-testid="password"
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-          <p>{user}</p>
-        </form>
+        <LoginForm doLogin={handleLogin}/>
       </div>
     );
   }
